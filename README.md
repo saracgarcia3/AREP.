@@ -11,7 +11,7 @@ Archivo de configuracion:
 sudo nano /etc/nginx/nginx.conf
 
 Aquí, puedes agregar la configuración para redirigir las solicitudes. Por ejemplo, si tu frontend está corriendo en el puerto 3000, el archivo de configuración se vería algo así:
-
+```java
 server {
     listen 80;
     server_name _;
@@ -24,6 +24,7 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 }
+```
 reiniciar: sudo systemctl restart nginx
 
 configurar fronted: sudo yum install nodejs -y  # Para Amazon Linux
@@ -34,6 +35,7 @@ npm install
 se corre: npm start
 
 Fronted: 
+```java
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -80,8 +82,10 @@ Fronted:
 
 </body>
 </html>
+```
 
 con node.js, server.js para el backend:
+```java
 // server.js
 const express = require('express');
 const path = require('path');
@@ -96,13 +100,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
-
+```
 npm init -y
 npm install express
 
 http://<ip-publica-de-tu-instancia>:3000.
 
 lucas: 
+```java
 function lucas(n) {
     let a = 2, b = 1;
     if (n === 0) return a;
@@ -115,8 +120,10 @@ function lucas(n) {
     return b;
 }
 console.log(lucas(5)); // Ejemplo: L_5 = 11
+```
 
 secuencia lineal: 
+```java
 function secuenciaLineal(a0, d, n) {
     let secuencia = [];
     for (let i = 0; i < n; i++) {
@@ -125,8 +132,10 @@ function secuenciaLineal(a0, d, n) {
     return secuencia;
 }
 console.log(secuenciaLineal(2, 3, 5)); // Ejemplo: [2, 5, 8, 11, 14]
+```
 
 primos: 
+```java
 function esPrimo(num) {
     if (num <= 1) return false;
     for (let i = 2; i <= Math.sqrt(num); i++) {
@@ -144,8 +153,9 @@ function primosHasta(n) {
 }
 
 console.log(primosHasta(10)); // Ejemplo: [2, 3, 5, 7]
-
+```
 no primos: 
+```java
 function noPrimosHasta(n) {
     let primos = primosHasta(n);  // Usamos la función de los primos
     let noPrimos = [];
@@ -156,8 +166,9 @@ function noPrimosHasta(n) {
 }
 
 console.log(noPrimosHasta(10));  // Ejemplo: [4, 6, 8, 9, 10]
-
+```
 collatz: 
+```java
 function secuenciaCollatz(n) {
     let secuencia = [n];
     while (n !== 1) {
@@ -170,6 +181,7 @@ function secuenciaCollatz(n) {
     }
     return secuencia;
 }
+```
 
 console.log(secuenciaCollatz(6));  // Ejemplo: [6, 3, 10, 5, 16, 8, 4, 2, 1]
 
