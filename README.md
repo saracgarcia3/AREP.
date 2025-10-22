@@ -11,6 +11,7 @@ Archivo de configuracion:
 sudo nano /etc/nginx/nginx.conf
 
 Aquí, puedes agregar la configuración para redirigir las solicitudes. Por ejemplo, si tu frontend está corriendo en el puerto 3000, el archivo de configuración se vería algo así:
+
 server {
     listen 80;
     server_name _;
