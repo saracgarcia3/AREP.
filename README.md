@@ -1,4 +1,110 @@
 # AREP.
+import java.util.ArrayList;
+import java.util.List;
+
+public class PellSequenceJSON {
+
+    public static void main(String[] args) {
+        int n = 13; // puedes cambiar el valor
+        String json = getPellSequenceAsJSON(n);
+        System.out.println(json);
+    }
+
+    public static String getPellSequenceAsJSON(int n) {
+        List<Long> sequence = new ArrayList<>();
+
+        long p0 = 0;
+        long p1 = 1;
+        sequence.add(p0);
+
+        if (n > 0) sequence.add(p1);
+
+        for (int i = 2; i <= n; i++) {
+            long pn = 2 * p1 + p0;
+            sequence.add(pn);
+            p0 = p1;
+            p1 = pn;
+        }
+
+        // Convertir a formato JSON (manualmente)
+        return "{\n" +
+                "  \"operation\": \"Secuencia de Pell\",\n" +
+                "  \"input\": " + n + ",\n" +
+                "  \"output\": " + sequence.toString() + "\n" +
+                "}";
+    }
+}
+
+import com.sun.net.httpserver.HttpServer;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.List;
+
+public class PellService {
+
+    public static void main(String[] args) throws IOException {
+        // Inicia el servidor en el puerto 8080
+        HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
+        server.createContext("/pellseq", new PellHandler());
+        server.setExecutor(null);
+        System.out.println("✅ Servidor iniciado en http://localhost:8080/pellseq?value=13");
+        server.start();
+    }
+
+    // Manejador para procesar las peticiones HTTP GET
+    static class PellHandler implements HttpHandler {
+        @Override
+        public void handle(HttpExchange exchange) throws IOException {
+            String query = exchange.getRequestURI().getQuery();
+            int n = 0;
+
+            // Leer el parámetro ?value=13
+            if (query != null && query.startsWith("value=")) {
+                n = Integer.parseInt(query.substring(6));
+            }
+
+            // Calcular la secuencia
+            List<Long> sequence = generatePellSequence(n);
+
+            // Crear el JSON de respuesta
+            String json = "{\n" +
+                    "  \"operation\": \"Secuencia de Pell\",\n" +
+                    "  \"input\": " + n + ",\n" +
+                    "  \"output\": " + sequence.toString() + "\n" +
+                    "}";
+
+            // Configurar respuesta
+            exchange.getResponseHeaders().add("Content-Type", "application/json");
+            exchange.sendResponseHeaders(200, json.getBytes().length);
+            OutputStream os = exchange.getResponseBody();
+            os.write(json.getBytes());
+            os.close();
+        }
+    }
+
+    // Función iterativa para generar la secuencia de Pell
+    public static List<Long> generatePellSequence(int n) {
+        List<Long> seq = new ArrayList<>();
+        long p0 = 0, p1 = 1;
+
+        seq.add(p0);
+        if (n == 0) return seq;
+        seq.add(p1);
+
+        for (int i = 2; i <= n; i++) {
+            long pn = 2 * p1 + p0;
+            seq.add(pn);
+            p0 = p1;
+            p1 = pn;
+        }
+        return seq;
+    }
+}
+
 <img width="670" height="786" alt="image" src="https://github.com/user-attachments/assets/ff7d5a5a-1d53-4caf-b821-17a955e58401" />
 
 Diseñe un prototipo de sistema de microservicios que tenga un servicio (En la figura se representa con el nombre Math Services) para computar las funciones numéricas.  El servicio de las funciones numéricas debe estar desplegado en al menos dos instancias virtuales de EC2. Adicionalmente, debe implementar un service proxy que reciba las solicitudes de llamado desde los clientes  y se las delegue a las dos instancias del servicio numérico usando un algoritmo de activo-pasivo. Si uno de los servicios está caido debe dirigirla al otro.  El proxy deberá estar desplegado en otra máquina EC2. Asegúrese de poder configurar las direcciones y puertos de las instancias del servicio en el proxy usando variables de entorno del sistema operativo.  Finalmente, construya un cliente Web mínimo con un formulario que reciba el valor y de manera asíncrona invoke el servicio en el PROXY. Puede hacer un formulario para cada una de las funciones. El cliente debe ser escrito en HTML y JS.
