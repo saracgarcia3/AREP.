@@ -2,6 +2,9 @@
 
 Para conectar la llave:
 ssh -i "tu-llave.pem" ec2-user@ip-publica-de-tu-instancia
+ssh -i "tu-llave.pem" ec2-user@10.10.89.50
+chmod 400 tu-llave.pem
+
 
 Instalamos el nginx:
 sudo yum install nginx -y
