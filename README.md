@@ -104,6 +104,13 @@ public class PellService {
         return seq;
     }
 }
+sudo apt update
+sudo apt install -y nodejs npm
+node -v
+npm -v
+mkdir proxy
+cd proxy
+ 
 
 <img width="670" height="786" alt="image" src="https://github.com/user-attachments/assets/ff7d5a5a-1d53-4caf-b821-17a955e58401" />
 
